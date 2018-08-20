@@ -51,13 +51,19 @@ class BoxplotChart extends Component {
             ref={el => d3.select(el).call(yAxis)}
           />
           {csv.map(obj => (
-            <circle
+            <g
               key={obj.day}
-              r="5"
-              cx={xScale(obj.day)}
-              cy={yScale(obj.median)}
-              fill="darkgray"
-            />
+              transform={`translate(${xScale(obj.day)}, ${yScale(obj.median)})`}
+            >
+              <rect
+                width="20"
+                height={yScale(obj.q1) - yScale(obj.q3)}
+                x="-10"
+                y={yScale(obj.q3) - yScale(obj.median)}
+                fill="white"
+                stroke="black"
+              />
+            </g>
           ))}
         </g>
       </Svg>
