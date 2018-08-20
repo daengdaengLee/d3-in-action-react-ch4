@@ -63,6 +63,22 @@ class BoxplotChart extends Component {
                 stroke="black"
                 strokeWidth="4px"
               />
+              <line
+                x1="-10"
+                y1={yScale(obj.max) - yScale(obj.median)}
+                x2="10"
+                y2={yScale(obj.max) - yScale(obj.median)}
+                stroke="black"
+                strokeWidth="4px"
+              />
+              <line
+                x1="-10"
+                y1={yScale(obj.min) - yScale(obj.median)}
+                x2="10"
+                y2={yScale(obj.min) - yScale(obj.median)}
+                stroke="black"
+                strokeWidth="4px"
+              />
               <rect
                 width="20"
                 height={yScale(obj.q1) - yScale(obj.q3)}
@@ -70,6 +86,15 @@ class BoxplotChart extends Component {
                 y={yScale(obj.q3) - yScale(obj.median)}
                 fill="white"
                 stroke="black"
+                strokeWidth="2px"
+              />
+              <line
+                x1="-10"
+                y1="0"
+                x2="10"
+                y2="0"
+                stroke="darkgray"
+                strokeWidth="4px"
               />
             </g>
           ))}
