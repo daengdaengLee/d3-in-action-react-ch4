@@ -41,7 +41,7 @@ class BoxplotChart extends Component {
     const { csv } = this.state;
     return (
       <Svg>
-        <g transform="translate(24, 24)">
+        <g transform="translate(50, 50)">
           <g
             transform="translate(0, 480)"
             ref={el => d3.select(el).call(xAxis)}
