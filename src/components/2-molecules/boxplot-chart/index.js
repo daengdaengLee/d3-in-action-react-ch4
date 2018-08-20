@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
+import './index.css';
 
 const Svg = styled.svg`
   width: 100%;
@@ -11,6 +12,7 @@ const xScale = d3
   .scaleLinear()
   .domain([1, 8])
   .range([20, 470]);
+
 const yScale = d3
   .scaleLinear()
   .domain([0, 100])
@@ -34,13 +36,17 @@ class BoxplotChart extends Component {
     super(props);
     this.state = {
       csv: [],
+      selected: '',
     };
+    this._handleClickBox = this._handleClickBox.bind(this);
+    this._colorScale = this._colorScale.bind(this);
   }
 
   render() {
-    const { csv } = this.state;
+    const { _handleClickBox, _colorScale } = this;
+    const { csv, selected } = this.state;
     return (
-      <Svg>
+      <Svg className="__BoxplotChart">
         <g transform="translate(50, 50)">
           <g
             transform="translate(0, 480)"
@@ -80,11 +86,13 @@ class BoxplotChart extends Component {
                 strokeWidth="4px"
               />
               <rect
+                onClick={e => _handleClickBox({ ...e, _day: obj.day })}
+                data-box={obj.day}
                 width="20"
                 height={yScale(obj.q1) - yScale(obj.q3)}
                 x="-10"
                 y={yScale(obj.q3) - yScale(obj.median)}
-                fill="white"
+                fill={_colorScale(selected, obj.day)}
                 stroke="black"
                 strokeWidth="2px"
               />
@@ -105,6 +113,26 @@ class BoxplotChart extends Component {
 
   componentDidMount() {
     d3.csv('/boxplot.csv').then(res => this.setState({ csv: res }));
+  }
+
+  _handleClickBox({ _day }) {
+    this.setState(prevState => ({
+      ...prevState,
+      selected: prevState.selected === _day ? '' : _day,
+    }));
+  }
+
+  _colorScale(selectedDay, currentDay) {
+    const { csv } = this.state;
+    const numExtent = d3.extent(csv, obj => parseInt(obj.number, 10));
+    const target = csv.find(obj => obj.day === currentDay);
+    return selectedDay !== currentDay
+      ? 'white'
+      : d3
+        .scaleLinear()
+        .interpolate(d3.interpolateHcl)
+        .domain(numExtent)
+        .range(['yellow', 'blue'])(parseInt(target.number, 10));
   }
 }
 
