@@ -45,6 +45,11 @@ const MainNavigation = ({ page }) => (
           Scatter
         </CustomLink>
       </ListItem>
+      <ListItem>
+        <CustomLink to="/boxplot" selected={page === 'boxplot'}>
+          Boxplot
+        </CustomLink>
+      </ListItem>
     </List>
   </Nav>
 );
