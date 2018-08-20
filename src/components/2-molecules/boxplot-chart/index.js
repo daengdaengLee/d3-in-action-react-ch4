@@ -55,6 +55,14 @@ class BoxplotChart extends Component {
               key={obj.day}
               transform={`translate(${xScale(obj.day)}, ${yScale(obj.median)})`}
             >
+              <line
+                x1="0"
+                y1={yScale(obj.max) - yScale(obj.median)}
+                x2="0"
+                y2={yScale(obj.min) - yScale(obj.median)}
+                stroke="black"
+                strokeWidth="4px"
+              />
               <rect
                 width="20"
                 height={yScale(obj.q1) - yScale(obj.q3)}
