@@ -6,6 +6,7 @@ const xScale = d3
   .scaleLinear()
   .domain([1, 10.5])
   .range([20, 480]);
+
 const yScale = d3
   .scaleLinear()
   .domain([0, 35])
@@ -22,6 +23,21 @@ const yAxis = d3
   .scale(yScale)
   .ticks(10)
   .tickSize(480);
+
+const tweetLine = d3
+  .line()
+  .x(d => xScale(d.day))
+  .y(d => yScale(d.tweets));
+
+const retweetLine = d3
+  .line()
+  .x(d => xScale(d.day))
+  .y(d => yScale(d.retweets));
+
+const favLine = d3
+  .line()
+  .x(d => xScale(d.day))
+  .y(d => yScale(d.favorites));
 
 const Svg = styled.svg`
   width: 100%;
@@ -70,6 +86,19 @@ class LineChart extends Component {
               fill="gray"
             />
           ))}
+          <path
+            d={tweetLine(csv)}
+            fill="none"
+            stroke="darkred"
+            strokeWidth="2"
+          />
+          <path
+            d={retweetLine(csv)}
+            fill="none"
+            stroke="gray"
+            strokeWidth="3"
+          />
+          <path d={favLine(csv)} fill="none" stroke="black" strokeWidth="2" />
         </g>
       </Svg>
     );
