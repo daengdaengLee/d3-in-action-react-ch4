@@ -15,7 +15,7 @@ const yScale = d3
 const xAxis = d3
   .axisBottom()
   .scale(xScale)
-  .tickSize(480)
+  .tickSize(760)
   .tickValues([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
 const yAxis = d3
@@ -24,11 +24,12 @@ const yAxis = d3
   .ticks(10)
   .tickSize(480);
 
-const movieLine = name =>
+const movieArea = name =>
   d3
-    .line()
+    .area()
     .x(d => xScale(d.day))
-    .y(d => yScale(d[name]))
+    .y1(d => yScale(d[name]))
+    .y0(d => yScale(-d[name]))
     .curve(d3.curveCardinal);
 
 const Svg = styled.svg`
@@ -55,11 +56,11 @@ class StreamChart extends Component {
           {movieNames.map(name => (
             <path
               key={name}
-              d={movieLine(name)(csv)}
-              fill="none"
-              stroke="black"
-              strokeWidth="3"
-              opacity="0.75"
+              d={movieArea(name)(csv)}
+              fill="darkgray"
+              stroke="lightgray"
+              strokeWidth="2"
+              opacity="0.5"
             />
           ))}
         </g>
