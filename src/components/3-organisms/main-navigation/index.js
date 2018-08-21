@@ -1,6 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
+import RouterLink from 'components/1-atoms/router-link';
 
 const Nav = styled.nav`
   display: flex;
@@ -21,34 +21,23 @@ const ListItem = styled.li`
   padding-left: 0.8rem;
 `;
 
-const CustomLink = styled(Link)`
-  color: black;
-  text-decoration: none;
-  display: flex;
-  align-items: center;
-  width: 0;
-  flex-grow: 1;
-  ${props =>
-    props.selected &&
-    css`
-      background-color: gray;
-    `} &:hover {
-    background-color: gray;
-  }
-`;
-
 const MainNavigation = ({ page }) => (
   <Nav>
     <List>
       <ListItem>
-        <CustomLink to="/scatter" selected={page === 'scatter'}>
+        <RouterLink to="/scatter" isCurrent={page === 'scatter'}>
           Scatter
-        </CustomLink>
+        </RouterLink>
       </ListItem>
       <ListItem>
-        <CustomLink to="/boxplot" selected={page === 'boxplot'}>
+        <RouterLink to="/boxplot" isCurrent={page === 'boxplot'}>
           Boxplot
-        </CustomLink>
+        </RouterLink>
+      </ListItem>
+      <ListItem>
+        <RouterLink to="/linechart" isCurrent={page === 'linechart'}>
+          Linechart
+        </RouterLink>
       </ListItem>
     </List>
   </Nav>
