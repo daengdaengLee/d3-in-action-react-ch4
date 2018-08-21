@@ -2,6 +2,23 @@ import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
 
+const simpleStacking = (incomingData, incomingAttribute) => {
+  const keys = Object.keys(incomingData);
+  const idx = keys.findIndex(key => key === incomingAttribute);
+  return keys.reduce(
+    (acc, cur, curIdx) =>
+      curIdx > idx || cur === 'day'
+        ? acc
+        : acc + parseInt(incomingData[cur], 10),
+    0,
+  );
+};
+
+const fillScale = d3
+  .scaleLinear()
+  .domain([0, 5])
+  .range(['lightgray', 'black']);
+
 const xScale = d3
   .scaleLinear()
   .domain([1, 10.5])
@@ -9,13 +26,13 @@ const xScale = d3
 
 const yScale = d3
   .scaleLinear()
-  .domain([0, 35])
+  .domain([0, 50])
   .range([480, 20]);
 
 const xAxis = d3
   .axisBottom()
   .scale(xScale)
-  .tickSize(760)
+  .tickSize(480)
   .tickValues([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]);
 
 const yAxis = d3
@@ -28,9 +45,9 @@ const movieArea = name =>
   d3
     .area()
     .x(d => xScale(d.day))
-    .y1(d => yScale(d[name]))
-    .y0(d => yScale(-d[name]))
-    .curve(d3.curveCardinal);
+    .y1(d => yScale(simpleStacking(d, name)))
+    .y0(d => yScale(simpleStacking(d, name) - parseInt(d[name], 10)))
+    .curve(d3.curveBasis);
 
 const Svg = styled.svg`
   width: 100%;
@@ -53,12 +70,12 @@ class StreamChart extends Component {
         <g transform="translate(50, 50)">
           <g ref={el => d3.select(el).call(xAxis)} />
           <g ref={el => d3.select(el).call(yAxis)} />
-          {movieNames.map(name => (
+          {movieNames.map((name, i) => (
             <path
               key={name}
               d={movieArea(name)(csv)}
-              fill="darkgray"
-              stroke="lightgray"
+              fill={fillScale(i)}
+              stroke="none"
               strokeWidth="2"
               opacity="0.5"
             />
