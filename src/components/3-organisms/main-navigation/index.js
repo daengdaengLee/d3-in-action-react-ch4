@@ -39,6 +39,11 @@ const MainNavigation = ({ page }) => (
           Linechart
         </RouterLink>
       </ListItem>
+      <ListItem>
+        <RouterLink to="/streamchart" isCurrent={page === 'streamchart'}>
+          Streamchart
+        </RouterLink>
+      </ListItem>
     </List>
   </Nav>
 );
