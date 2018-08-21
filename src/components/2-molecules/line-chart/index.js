@@ -87,18 +87,23 @@ class LineChart extends Component {
             />
           ))}
           <path
-            d={tweetLine(csv)}
+            d={tweetLine.curve(d3.curveCardinal)(csv)}
             fill="none"
             stroke="darkred"
             strokeWidth="2"
           />
           <path
-            d={retweetLine(csv)}
+            d={retweetLine.curve(d3.curveBasis)(csv)}
             fill="none"
             stroke="gray"
             strokeWidth="3"
           />
-          <path d={favLine(csv)} fill="none" stroke="black" strokeWidth="2" />
+          <path
+            d={favLine.curve(d3.curveStepBefore)(csv)}
+            fill="none"
+            stroke="black"
+            strokeWidth="2"
+          />
         </g>
       </Svg>
     );
