@@ -56,6 +56,14 @@ const MainNavigation = ({ page, chapter }) => (
           4-Streamchart
         </RouterLink>
       </ListItem>
+      <ListItem>
+        <RouterLink
+          to="/5/histogram"
+          isCurrent={chapter === '5' && page === 'histogram'}
+        >
+          5-Histogram
+        </RouterLink>
+      </ListItem>
     </List>
   </Nav>
 );
