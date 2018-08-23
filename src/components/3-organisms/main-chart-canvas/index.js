@@ -13,10 +13,10 @@ const CanvasContainer = styled.div`
 
 const MainChartCanvas = () => (
   <CanvasContainer>
-    <Route path="/scatter" component={ScatterChart} />
-    <Route path="/boxplot" component={BoxplotChart} />
-    <Route path="/linechart" component={LineChart} />
-    <Route path="/streamchart" component={StreamChart} />
+    <Route path="/4/scatter" component={ScatterChart} />
+    <Route path="/4/boxplot" component={BoxplotChart} />
+    <Route path="/4/linechart" component={LineChart} />
+    <Route path="/4/streamchart" component={StreamChart} />
   </CanvasContainer>
 );
 

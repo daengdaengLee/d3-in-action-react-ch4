@@ -25,22 +25,22 @@ const MainNavigation = ({ page }) => (
   <Nav>
     <List>
       <ListItem>
-        <RouterLink to="/scatter" isCurrent={page === 'scatter'}>
+        <RouterLink to="/4/scatter" isCurrent={page === 'scatter'}>
           4-Scatter
         </RouterLink>
       </ListItem>
       <ListItem>
-        <RouterLink to="/boxplot" isCurrent={page === 'boxplot'}>
+        <RouterLink to="/4/boxplot" isCurrent={page === 'boxplot'}>
           4-Boxplot
         </RouterLink>
       </ListItem>
       <ListItem>
-        <RouterLink to="/linechart" isCurrent={page === 'linechart'}>
+        <RouterLink to="/4/linechart" isCurrent={page === 'linechart'}>
           4-Linechart
         </RouterLink>
       </ListItem>
       <ListItem>
-        <RouterLink to="/streamchart" isCurrent={page === 'streamchart'}>
+        <RouterLink to="/4/streamchart" isCurrent={page === 'streamchart'}>
           4-Streamchart
         </RouterLink>
       </ListItem>
