@@ -7,7 +7,7 @@ const Svg = styled.svg`
   height: 99%;
 `;
 
-class ScatterChart extends Component {
+class ScatterChartFour extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -86,4 +86,4 @@ class ScatterChart extends Component {
   }
 }
 
-export default ScatterChart;
+export default ScatterChartFour;

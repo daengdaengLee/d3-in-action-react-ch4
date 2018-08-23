@@ -44,7 +44,7 @@ const Svg = styled.svg`
   height: 99%;
 `;
 
-class LineChart extends Component {
+class LineChartFour extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -114,4 +114,4 @@ class LineChart extends Component {
   }
 }
 
-export default LineChart;
+export default LineChartFour;

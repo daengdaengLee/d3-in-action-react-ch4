@@ -107,7 +107,7 @@ const Svg = styled.svg`
   height: 99%;
 `;
 
-class StreamChart extends Component {
+class StreamChartFour extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -173,4 +173,4 @@ class StreamChart extends Component {
   }
 }
 
-export default StreamChart;
+export default StreamChartFour;
