@@ -21,26 +21,38 @@ const ListItem = styled.li`
   padding-left: 0.8rem;
 `;
 
-const MainNavigation = ({ page }) => (
+const MainNavigation = ({ page, chapter }) => (
   <Nav>
     <List>
       <ListItem>
-        <RouterLink to="/4/scatter" isCurrent={page === 'scatter'}>
+        <RouterLink
+          to="/4/scatter"
+          isCurrent={chapter === '4' && page === 'scatter'}
+        >
           4-Scatter
         </RouterLink>
       </ListItem>
       <ListItem>
-        <RouterLink to="/4/boxplot" isCurrent={page === 'boxplot'}>
+        <RouterLink
+          to="/4/boxplot"
+          isCurrent={chapter === '4' && page === 'boxplot'}
+        >
           4-Boxplot
         </RouterLink>
       </ListItem>
       <ListItem>
-        <RouterLink to="/4/linechart" isCurrent={page === 'linechart'}>
+        <RouterLink
+          to="/4/linechart"
+          isCurrent={chapter === '4' && page === 'linechart'}
+        >
           4-Linechart
         </RouterLink>
       </ListItem>
       <ListItem>
-        <RouterLink to="/4/streamchart" isCurrent={page === 'streamchart'}>
+        <RouterLink
+          to="/4/streamchart"
+          isCurrent={chapter === '4' && page === 'streamchart'}
+        >
           4-Streamchart
         </RouterLink>
       </ListItem>
