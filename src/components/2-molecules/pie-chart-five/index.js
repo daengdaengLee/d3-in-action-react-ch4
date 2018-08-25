@@ -21,7 +21,7 @@ class PieChartFive extends Component {
     return (
       <Svg>
         <g transform="translate(250, 250)">
-          {/* {data.map(d => (
+          {data.map(d => (
             <path
               key={d.index}
               d={_newArc()(d)}
@@ -30,7 +30,7 @@ class PieChartFive extends Component {
               stroke="black"
               strokeWidth="2px"
             />
-          ))} */}
+          ))}
         </g>
       </Svg>
     );
@@ -51,6 +51,7 @@ class PieChartFive extends Component {
             numRetweets: d3.sum(obj.values, d => d.retweets.length),
           })),
       )
+      .then(nestedTweets => d3.pie().value(d => d.numTweets)(nestedTweets))
       .then(data => this.setState({ data }))
       .catch(() => this.setState({ data: [] }));
   }
@@ -59,7 +60,7 @@ class PieChartFive extends Component {
     return d3
       .arc()
       .outerRadius(100)
-      .innerRadius(0);
+      .innerRadius(20);
   }
 }
 
