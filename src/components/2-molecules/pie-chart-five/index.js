@@ -12,16 +12,18 @@ class PieChartFive extends Component {
     super(props);
     this.state = {
       data: [],
+      type: 'numTweets',
     };
+    this._pieChartData = this._pieChartData.bind(this);
+    this._handleClickPie = this._handleClickPie.bind(this);
   }
 
   render() {
-    const { _newArc } = this;
-    const { data } = this.state;
+    const { _newArc, _pieChartData, _handleClickPie } = this;
     return (
       <Svg>
         <g transform="translate(250, 250)">
-          {data.map(d => (
+          {_pieChartData().map(d => (
             <path
               key={d.index}
               d={_newArc()(d)}
@@ -29,6 +31,7 @@ class PieChartFive extends Component {
               opacity="0.5"
               stroke="black"
               strokeWidth="2px"
+              onClick={_handleClickPie}
             />
           ))}
         </g>
@@ -51,9 +54,13 @@ class PieChartFive extends Component {
             numRetweets: d3.sum(obj.values, d => d.retweets.length),
           })),
       )
-      .then(nestedTweets => d3.pie().value(d => d.numTweets)(nestedTweets))
       .then(data => this.setState({ data }))
       .catch(() => this.setState({ data: [] }));
+  }
+
+  _pieChartData() {
+    const { data, type } = this.state;
+    return d3.pie().value(d => d[type])(data);
   }
 
   _newArc() {
@@ -61,6 +68,18 @@ class PieChartFive extends Component {
       .arc()
       .outerRadius(100)
       .innerRadius(20);
+  }
+
+  _handleClickPie() {
+    this.setState(prevState => ({
+      ...prevState,
+      type:
+        prevState.type === 'numTweets'
+          ? 'numFavorites'
+          : prevState.type === 'numFavorites'
+            ? 'numRetweets'
+            : 'numTweets',
+    }));
   }
 }
 
