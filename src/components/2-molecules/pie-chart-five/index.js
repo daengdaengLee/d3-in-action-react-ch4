@@ -7,6 +7,52 @@ const Svg = styled.svg`
   height: 99%;
 `;
 
+class PiePiece extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      d: null,
+    };
+    this.path = React.createRef();
+  }
+
+  render() {
+    const { d } = this.state;
+    const { onClick } = this.props;
+    return (
+      !d || (
+        <path
+          ref={this.path}
+          d={d}
+          fill="blue"
+          opacity="0.5"
+          stroke="black"
+          strokeWidth="2px"
+          onClick={onClick}
+        />
+      )
+    );
+  }
+
+  componentDidMount() {
+    const { d } = this.props;
+    this.setState({ d });
+  }
+
+  componentDidUpdate() {
+    const { d } = this.props;
+    d3.select(this.path.current)
+      .transition()
+      .duration(1000)
+      .attr('d', d)
+      .on('end', () => this.setState({ d }));
+  }
+
+  componentWillUnmount() {
+    d3.select(this.path.current).interrupt();
+  }
+}
+
 class PieChartFive extends Component {
   constructor(props) {
     super(props);
@@ -24,13 +70,9 @@ class PieChartFive extends Component {
       <Svg>
         <g transform="translate(250, 250)">
           {_pieChartData().map(d => (
-            <path
+            <PiePiece
               key={d.index}
               d={_newArc()(d)}
-              fill="blue"
-              opacity="0.5"
-              stroke="black"
-              strokeWidth="2px"
               onClick={_handleClickPie}
             />
           ))}
