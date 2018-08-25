@@ -102,7 +102,10 @@ class PieChartFive extends Component {
 
   _pieChartData() {
     const { data, type } = this.state;
-    return d3.pie().value(d => d[type])(data);
+    return d3
+      .pie()
+      .sort(null)
+      .value(d => d[type])(data);
   }
 
   _newArc() {
