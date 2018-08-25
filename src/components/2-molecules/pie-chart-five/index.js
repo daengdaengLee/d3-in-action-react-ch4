@@ -21,7 +21,7 @@ class PieChartFive extends Component {
     return (
       <Svg>
         <g transform="translate(250, 250)">
-          {data.map(d => (
+          {/* {data.map(d => (
             <path
               key={d.index}
               d={_newArc()(d)}
@@ -30,15 +30,29 @@ class PieChartFive extends Component {
               stroke="black"
               strokeWidth="2px"
             />
-          ))}
+          ))} */}
         </g>
       </Svg>
     );
   }
 
   componentDidMount() {
-    const data = d3.pie()([1, 1, 2]);
-    this.setState({ data });
+    d3.json('/tweets.json')
+      .then(res => res.tweets)
+      .then(tweets =>
+        d3
+          .nest()
+          .key(obj => obj.user)
+          .entries(tweets)
+          .map(obj => ({
+            ...obj,
+            numTweets: obj.values.length,
+            numFavorites: d3.sum(obj.values, d => d.favorites.length),
+            numRetweets: d3.sum(obj.values, d => d.retweets.length),
+          })),
+      )
+      .then(data => this.setState({ data }))
+      .catch(() => this.setState({ data: [] }));
   }
 
   _newArc() {
