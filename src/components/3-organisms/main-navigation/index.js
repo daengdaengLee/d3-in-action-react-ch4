@@ -9,6 +9,7 @@ const navigations = [
   { chapter: '4', page: 'streamchart', name: '4-Stream' },
   { chapter: '5', page: 'histogram', name: '5-Histogram' },
   { chapter: '5', page: 'pie', name: '5-Pie' },
+  { chapter: '5', page: 'circlepack', name: '5-CirclePack' },
 ];
 
 const Nav = styled.nav`
