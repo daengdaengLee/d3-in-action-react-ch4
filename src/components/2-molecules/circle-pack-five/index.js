@@ -24,7 +24,7 @@ class CirclePackFive extends Component {
           {_packChart(data).map((obj, i) => (
             <circle
               key={i}
-              r={obj.r}
+              r={obj.r - obj.depth * 10}
               cx={obj.x}
               cy={obj.y}
               fill={_depthScale(obj.depth)}
