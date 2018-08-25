@@ -6,6 +6,7 @@ import BoxplotChartFour from 'components/2-molecules/boxplot-chart-four';
 import LineChartFour from 'components/2-molecules/line-chart-four';
 import StreamChartFour from 'components/2-molecules/stream-chart-four';
 import HistogramChartFive from 'components/2-molecules/histogram-chart-five';
+import PieChartFive from 'components/2-molecules/pie-chart-five';
 
 const CanvasContainer = styled.div`
   width: 100%;
@@ -19,6 +20,7 @@ const MainChartCanvas = () => (
     <Route path="/4/linechart" component={LineChartFour} />
     <Route path="/4/streamchart" component={StreamChartFour} />
     <Route path="/5/histogram" component={HistogramChartFive} />
+    <Route path="/5/pie" component={PieChartFive} />
   </CanvasContainer>
 );
 
