@@ -24,7 +24,7 @@ class CirclePackFive extends Component {
           {_packChart(data).map((obj, i) => (
             <circle
               key={i}
-              r={obj.r - obj.depth * 10}
+              r={obj.r}
               cx={obj.x}
               cy={obj.y}
               fill={_depthScale(obj.depth)}
@@ -58,8 +58,18 @@ class CirclePackFive extends Component {
 
   _packChart(data) {
     if (data.length === 0) return data;
-    const layout = d3.pack().size([500, 500]);
-    const root = d3.hierarchy(data, d => d.values).sum(d => 1);
+    const layout = d3
+      .pack()
+      .size([500, 500])
+      .padding(10);
+    const root = d3
+      .hierarchy(data, d => d.values)
+      .sum(
+        d =>
+          d.retweets && d.favorites
+            ? d.retweets.length + d.favorites.length + 1
+            : 1,
+      );
     return layout(root).descendants();
   }
 }
