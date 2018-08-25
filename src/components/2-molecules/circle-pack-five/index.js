@@ -7,35 +7,18 @@ const Svg = styled.svg`
   height: 99%;
 `;
 
-class PieChartFive extends Component {
+class CirclePackFive extends Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      type: 'numTweets',
     };
-    this._pieChartData = this._pieChartData.bind(this);
-    this._handleClickPie = this._handleClickPie.bind(this);
   }
 
   render() {
-    const { _newArc, _pieChartData, _handleClickPie } = this;
     return (
       <Svg>
-        <g transform="translate(250, 250)">
-          {_pieChartData().map(d => (
-            <path
-              key={d.data.key}
-              d={_newArc()(d)}
-              onClick={_handleClickPie}
-              fill="blue"
-              opacity="0.5"
-              stroke="black"
-              strokeWidth="2px"
-              cursor="pointer"
-            />
-          ))}
-        </g>
+        <g transform="translate(250, 250)">'hi'</g>
       </Svg>
     );
   }
@@ -47,44 +30,12 @@ class PieChartFive extends Component {
         d3
           .nest()
           .key(obj => obj.user)
-          .entries(tweets)
-          .map(obj => ({
-            ...obj,
-            numTweets: obj.values.length,
-            numFavorites: d3.sum(obj.values, d => d.favorites.length),
-            numRetweets: d3.sum(obj.values, d => d.retweets.length),
-          })),
+          .entries(tweets),
       )
+      .then(nestedTweets => ({ key: 'All Tweets', values: nestedTweets }))
       .then(data => this.setState({ data }))
-      .catch(() => this.setState({ data: [] }));
-  }
-
-  _pieChartData() {
-    const { data, type } = this.state;
-    return d3
-      .pie()
-      .sort(null)
-      .value(d => d[type])(data.filter(obj => obj[type] > 0));
-  }
-
-  _newArc() {
-    return d3
-      .arc()
-      .outerRadius(100)
-      .innerRadius(20);
-  }
-
-  _handleClickPie() {
-    this.setState(prevState => ({
-      ...prevState,
-      type:
-        prevState.type === 'numTweets'
-          ? 'numFavorites'
-          : prevState.type === 'numFavorites'
-            ? 'numRetweets'
-            : 'numTweets',
-    }));
+      .catch(() => this.setState({ data: {} }));
   }
 }
 
-export default PieChartFive;
+export default CirclePackFive;
