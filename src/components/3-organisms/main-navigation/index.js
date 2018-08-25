@@ -2,6 +2,15 @@ import React from 'react';
 import styled from 'styled-components';
 import RouterLink from 'components/1-atoms/router-link';
 
+const navigations = [
+  { chapter: '4', page: 'scatter', name: '4-Scatter' },
+  { chapter: '4', page: 'boxplot', name: '4-Boxplot' },
+  { chapter: '4', page: 'linechart', name: '4-Line' },
+  { chapter: '4', page: 'streamchart', name: '4-Stream' },
+  { chapter: '5', page: 'histogram', name: '5-Histogram' },
+  { chapter: '5', page: 'pie', name: '5-Pie' },
+];
+
 const Nav = styled.nav`
   display: flex;
   height: 100%;
@@ -24,46 +33,16 @@ const ListItem = styled.li`
 const MainNavigation = ({ page, chapter }) => (
   <Nav>
     <List>
-      <ListItem>
-        <RouterLink
-          to="/4/scatter"
-          isCurrent={chapter === '4' && page === 'scatter'}
-        >
-          4-Scatter
-        </RouterLink>
-      </ListItem>
-      <ListItem>
-        <RouterLink
-          to="/4/boxplot"
-          isCurrent={chapter === '4' && page === 'boxplot'}
-        >
-          4-Boxplot
-        </RouterLink>
-      </ListItem>
-      <ListItem>
-        <RouterLink
-          to="/4/linechart"
-          isCurrent={chapter === '4' && page === 'linechart'}
-        >
-          4-Linechart
-        </RouterLink>
-      </ListItem>
-      <ListItem>
-        <RouterLink
-          to="/4/streamchart"
-          isCurrent={chapter === '4' && page === 'streamchart'}
-        >
-          4-Streamchart
-        </RouterLink>
-      </ListItem>
-      <ListItem>
-        <RouterLink
-          to="/5/histogram"
-          isCurrent={chapter === '5' && page === 'histogram'}
-        >
-          5-Histogram
-        </RouterLink>
-      </ListItem>
+      {navigations.map(nav => (
+        <ListItem key={nav.name}>
+          <RouterLink
+            to={`/${nav.chapter}/${nav.page}`}
+            isCurrent={chapter === nav.chapter && page === nav.page}
+          >
+            {nav.name}
+          </RouterLink>
+        </ListItem>
+      ))}
     </List>
   </Nav>
 );
