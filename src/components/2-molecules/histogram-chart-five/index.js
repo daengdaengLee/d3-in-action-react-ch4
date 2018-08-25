@@ -53,6 +53,11 @@ class HistoRect extends Component {
       .attr('y', y)
       .on('end', () => this.setState({ height, y }));
   }
+
+  componentWillUnmount() {
+    d3.select(this.rect.current)
+      .interrupt();
+  }
 }
 
 class HistogramChartFive extends Component {
