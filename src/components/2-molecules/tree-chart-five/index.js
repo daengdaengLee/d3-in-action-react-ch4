@@ -14,16 +14,21 @@ class TreeChartFive extends Component {
       data: [],
       direction: 'V',
     };
+    this.treeG = React.createRef();
     this._changeDirection = this._changeDirection.bind(this);
+    this._treeZoom = this._treeZoom.bind(this);
+    this._zoomed = this._zoomed.bind(this);
   }
 
   render() {
     const {
+      treeG,
       _treeChart,
       _depthScale,
       _vLinkGenerator,
       _hLinkGenerator,
       _changeDirection,
+      _treeZoom,
     } = this;
     const { data, direction } = this.state;
     const tree = _treeChart(data);
@@ -33,8 +38,8 @@ class TreeChartFive extends Component {
       <Fragment>
         <button onClick={() => _changeDirection('V')}>Vertical</button>
         <button onClick={() => _changeDirection('H')}>Horizontal</button>
-        <Svg>
-          <g id="treeG" transform="translate(40, 40)">
+        <Svg innerRef={el => d3.select(el).call(_treeZoom())}>
+          <g className="treeG" transform="translate(40, 40)" ref={treeG}>
             {links.map((obj, i) => (
               <path
                 key={i}
@@ -112,6 +117,17 @@ class TreeChartFive extends Component {
 
   _changeDirection(direction) {
     this.setState({ direction });
+  }
+
+  _treeZoom() {
+    const { _zoomed } = this;
+    return d3.zoom().on('zoom', _zoomed);
+  }
+
+  _zoomed() {
+    const { treeG } = this;
+    const { x, y } = d3.event.transform;
+    treeG.current.setAttribute('transform', `translate(${x}, ${y})`);
   }
 }
 
