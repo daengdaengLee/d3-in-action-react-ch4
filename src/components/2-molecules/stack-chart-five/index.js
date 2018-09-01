@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import moviesCSV from '../../../assets/resources/movies';
 
 const Svg = styled.svg`
   width: 100%;
-  height: 100%;
+  height: 99%;
 `;
 
 class StackChartFive extends Component {
@@ -37,14 +38,11 @@ class StackChartFive extends Component {
   }
 
   componentDidMount() {
-    d3.csv('/movies.csv')
-      .then(data => {
-        data.forEach(obj =>
-          Object.keys(obj).forEach(key => (obj[key] = parseInt(obj[key], 10))),
-        );
-        return data;
-      })
-      .then(data => this.setState({ data }));
+    const csv = d3.csvParse(moviesCSV);
+    csv.forEach(obj =>
+      Object.keys(obj).forEach(key => (obj[key] = parseInt(obj[key], 10))),
+    );
+    this.setState({ data: csv });
   }
 
   _xScale(x) {

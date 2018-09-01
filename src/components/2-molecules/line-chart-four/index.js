@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
+import tweetdataCSV from '../../../assets/resources/tweetdata';
 
 const xScale = d3
   .scaleLinear()
@@ -110,7 +111,8 @@ class LineChartFour extends Component {
   }
 
   componentDidMount() {
-    d3.csv('/tweetdata.csv').then(csv => this.setState({ csv }));
+    const csv = d3.csvParse(tweetdataCSV);
+    this.setState({ csv });
   }
 }
 

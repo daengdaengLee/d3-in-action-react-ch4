@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import tweetsJSON from '../../../assets/resources/tweets';
 
 const Svg = styled.svg`
   width: 100%;
@@ -41,22 +42,18 @@ class PieChartFive extends Component {
   }
 
   componentDidMount() {
-    d3.json('/tweets.json')
-      .then(res => res.tweets)
-      .then(tweets =>
-        d3
-          .nest()
-          .key(obj => obj.user)
-          .entries(tweets)
-          .map(obj => ({
-            ...obj,
-            numTweets: obj.values.length,
-            numFavorites: d3.sum(obj.values, d => d.favorites.length),
-            numRetweets: d3.sum(obj.values, d => d.retweets.length),
-          })),
-      )
-      .then(data => this.setState({ data }))
-      .catch(() => this.setState({ data: [] }));
+    const { tweets } = tweetsJSON;
+    const data = d3
+      .nest()
+      .key(obj => obj.user)
+      .entries(tweets)
+      .map(obj => ({
+        ...obj,
+        numTweets: obj.values.length,
+        numFavorites: d3.sum(obj.values, d => d.favorites.length),
+        numRetweets: d3.sum(obj.values, d => d.retweets.length),
+      }));
+    this.setState({ data });
   }
 
   _pieChartData() {

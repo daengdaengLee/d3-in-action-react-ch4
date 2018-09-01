@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
+import boxplotCSV from '../../../assets/resources/boxplot.js';
 import './index.css';
 
 const Svg = styled.svg`
@@ -112,7 +113,8 @@ class BoxplotChartFour extends Component {
   }
 
   componentDidMount() {
-    d3.csv('/boxplot.csv').then(res => this.setState({ csv: res }));
+    const parsedCSV = d3.csvParse(boxplotCSV);
+    this.setState({ csv: parsedCSV });
   }
 
   _handleClickBox({ _day }) {

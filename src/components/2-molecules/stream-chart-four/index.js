@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
+import moviesCSV from '../../../assets/resources/movies';
 
 const simpleStacking = (incomingData, incomingAttribute) => {
   const keys = Object.keys(incomingData);
@@ -169,7 +170,8 @@ class StreamChartFour extends Component {
   }
 
   componentDidMount() {
-    d3.csv('/movies.csv').then(csv => this.setState({ csv }));
+    const csv = d3.csvParse(moviesCSV);
+    this.setState({ csv });
   }
 }
 

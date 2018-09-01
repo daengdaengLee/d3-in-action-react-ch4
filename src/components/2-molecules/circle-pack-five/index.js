@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import tweetsJSON from '../../../assets/resources/tweets';
 
 const Svg = styled.svg`
   width: 100%;
@@ -36,17 +37,15 @@ class CirclePackFive extends Component {
   }
 
   componentDidMount() {
-    d3.json('/tweets.json')
-      .then(res => res.tweets)
-      .then(tweets =>
-        d3
-          .nest()
-          .key(obj => obj.user)
-          .entries(tweets),
-      )
-      .then(nestedTweets => ({ key: 'All Tweets', values: nestedTweets }))
-      .then(data => this.setState({ data }))
-      .catch(() => this.setState({ data: {} }));
+    const { tweets } = tweetsJSON;
+    const nestedTweets = {
+      key: 'All Tweets',
+      values: d3
+        .nest()
+        .key(tweet => tweet.user)
+        .entries(tweets),
+    };
+    this.setState({ data: nestedTweets });
   }
 
   _depthScale(depth) {

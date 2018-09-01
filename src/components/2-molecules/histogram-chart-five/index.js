@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import tweetsJSON from '../../../assets/resources/tweets';
 
 import './index.css';
 
@@ -55,8 +56,7 @@ class HistoRect extends Component {
   }
 
   componentWillUnmount() {
-    d3.select(this.rect.current)
-      .interrupt();
+    d3.select(this.rect.current).interrupt();
   }
 }
 
@@ -98,9 +98,7 @@ class HistogramChartFive extends Component {
   }
 
   componentDidMount() {
-    d3.json('/tweets.json')
-      .then(res => this.setState({ data: res.tweets }))
-      .catch(() => this.setState({ data: [] }));
+    this.setState({ data: tweetsJSON.tweets });
   }
 
   _xScale() {
