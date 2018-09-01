@@ -32,8 +32,6 @@ class RadialTreeFive extends Component {
     const cluster = _cluster(data);
     const nodes = !cluster.descendants ? [] : cluster.descendants();
     const links = !cluster.links ? [] : cluster.links();
-
-    console.log(nodes, links);
     return (
       <Svg innerRef={el => d3.select(el).call(_zoom())}>
         <g className="clusterG" transform="translate(40, 40)" ref={clusterG}>
