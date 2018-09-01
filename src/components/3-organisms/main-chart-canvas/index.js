@@ -11,6 +11,7 @@ import CirclePackFive from 'components/2-molecules/circle-pack-five';
 import TreeChartFive from 'components/2-molecules/tree-chart-five';
 import RadialTreeFive from 'components/2-molecules/radial-tree-five';
 import StackChartFive from 'components/2-molecules/stack-chart-five';
+import StackBarFive from 'components/2-molecules/stack-bar-five';
 
 const CanvasContainer = styled.div`
   width: 100%;
@@ -29,6 +30,7 @@ const MainChartCanvas = () => (
     <Route path="/5/tree" component={TreeChartFive} />
     <Route path="/5/radial-tree" component={RadialTreeFive} />
     <Route path="/5/stack" component={StackChartFive} />
+    <Route path="/5/stack-bar" component={StackBarFive} />
   </CanvasContainer>
 );
 
