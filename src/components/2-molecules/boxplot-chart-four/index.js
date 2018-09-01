@@ -1,12 +1,19 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
+import CSVTable from '../csv-table';
 import boxplotCSV from '../../../assets/resources/boxplot.js';
 import './index.css';
 
-const Svg = styled.svg`
+const Container = styled.div`
   width: 100%;
   height: 99%;
+  display: flex;
+`;
+
+const Svg = styled.svg`
+  width: 0;
+  flex-grow: 1;
 `;
 
 const xScale = d3
@@ -47,68 +54,73 @@ class BoxplotChartFour extends Component {
     const { _handleClickBox, _colorScale } = this;
     const { csv, selected } = this.state;
     return (
-      <Svg className="__BoxplotChart">
-        <g transform="translate(50, 50)">
-          <g
-            transform="translate(0, 480)"
-            ref={el => d3.select(el).call(xAxis)}
-          />
-          <g
-            transform="translate(470, 0)"
-            ref={el => d3.select(el).call(yAxis)}
-          />
-          {csv.map(obj => (
+      <Container>
+        <CSVTable csv={boxplotCSV} />
+        <Svg className="__BoxplotChart">
+          <g transform="translate(50, 50)">
             <g
-              key={obj.day}
-              transform={`translate(${xScale(obj.day)}, ${yScale(obj.median)})`}
-            >
-              <line
-                x1="0"
-                y1={yScale(obj.max) - yScale(obj.median)}
-                x2="0"
-                y2={yScale(obj.min) - yScale(obj.median)}
-                stroke="black"
-                strokeWidth="4px"
-              />
-              <line
-                x1="-10"
-                y1={yScale(obj.max) - yScale(obj.median)}
-                x2="10"
-                y2={yScale(obj.max) - yScale(obj.median)}
-                stroke="black"
-                strokeWidth="4px"
-              />
-              <line
-                x1="-10"
-                y1={yScale(obj.min) - yScale(obj.median)}
-                x2="10"
-                y2={yScale(obj.min) - yScale(obj.median)}
-                stroke="black"
-                strokeWidth="4px"
-              />
-              <rect
-                onClick={e => _handleClickBox({ ...e, _day: obj.day })}
-                data-box={obj.day}
-                width="20"
-                height={yScale(obj.q1) - yScale(obj.q3)}
-                x="-10"
-                y={yScale(obj.q3) - yScale(obj.median)}
-                fill={_colorScale(selected, obj.day)}
-                stroke="black"
-                strokeWidth="2px"
-              />
-              <line
-                x1="-10"
-                y1="0"
-                x2="10"
-                y2="0"
-                stroke="darkgray"
-                strokeWidth="4px"
-              />
-            </g>
-          ))}
-        </g>
-      </Svg>
+              transform="translate(0, 480)"
+              ref={el => d3.select(el).call(xAxis)}
+            />
+            <g
+              transform="translate(470, 0)"
+              ref={el => d3.select(el).call(yAxis)}
+            />
+            {csv.map(obj => (
+              <g
+                key={obj.day}
+                transform={`translate(${xScale(obj.day)}, ${yScale(
+                  obj.median,
+                )})`}
+              >
+                <line
+                  x1="0"
+                  y1={yScale(obj.max) - yScale(obj.median)}
+                  x2="0"
+                  y2={yScale(obj.min) - yScale(obj.median)}
+                  stroke="black"
+                  strokeWidth="4px"
+                />
+                <line
+                  x1="-10"
+                  y1={yScale(obj.max) - yScale(obj.median)}
+                  x2="10"
+                  y2={yScale(obj.max) - yScale(obj.median)}
+                  stroke="black"
+                  strokeWidth="4px"
+                />
+                <line
+                  x1="-10"
+                  y1={yScale(obj.min) - yScale(obj.median)}
+                  x2="10"
+                  y2={yScale(obj.min) - yScale(obj.median)}
+                  stroke="black"
+                  strokeWidth="4px"
+                />
+                <rect
+                  onClick={e => _handleClickBox({ ...e, _day: obj.day })}
+                  data-box={obj.day}
+                  width="20"
+                  height={yScale(obj.q1) - yScale(obj.q3)}
+                  x="-10"
+                  y={yScale(obj.q3) - yScale(obj.median)}
+                  fill={_colorScale(selected, obj.day)}
+                  stroke="black"
+                  strokeWidth="2px"
+                />
+                <line
+                  x1="-10"
+                  y1="0"
+                  x2="10"
+                  y2="0"
+                  stroke="darkgray"
+                  strokeWidth="4px"
+                />
+              </g>
+            ))}
+          </g>
+        </Svg>
+      </Container>
     );
   }
 

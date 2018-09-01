@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import CSVTable from '../csv-table';
 import moviesCSV from '../../../assets/resources/movies';
 
-const Svg = styled.svg`
+const Container = styled.div`
   width: 100%;
   height: 99%;
+  display: flex;
+`;
+
+const Svg = styled.svg`
+  width: 0;
+  flex-grow: 1;
 `;
 
 class StackChartFive extends Component {
@@ -24,16 +31,19 @@ class StackChartFive extends Component {
     const stackData = data.length === 0 ? [] : _stackLayout(data);
     stackData.sort((a, b) => a.index - b.index);
     return (
-      <Svg>
-        {stackData.map(series => (
-          <path
-            key={series.key}
-            className={series.key}
-            fill={_colorScale(series.key)}
-            d={_stackArea(series)}
-          />
-        ))}
-      </Svg>
+      <Container>
+        <CSVTable csv={moviesCSV} />
+        <Svg>
+          {stackData.map(series => (
+            <path
+              key={series.key}
+              className={series.key}
+              fill={_colorScale(series.key)}
+              d={_stackArea(series)}
+            />
+          ))}
+        </Svg>
+      </Container>
     );
   }
 

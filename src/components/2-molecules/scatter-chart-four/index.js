@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import CSVTable from '../csv-table';
 
-const Svg = styled.svg`
+const Container = styled.div`
   width: 100%;
   height: 99%;
+  display: flex;
+`;
+
+const Svg = styled.svg`
+  width: 0;
+  flex-grow: 1;
 `;
 
 class ScatterChartFour extends Component {
@@ -30,20 +37,27 @@ class ScatterChartFour extends Component {
     const { _xScale, _yScale, _xAxis, _yAxis } = this;
     const { scatterData } = this.state;
     return (
-      <Svg>
-        <g transform="translate(30, 30)">
-          <g ref={el => d3.select(el).call(_xAxis())} />
-          <g ref={el => d3.select(el).call(_yAxis())} />
-          {scatterData.map((obj, i) => (
-            <circle
-              key={i}
-              r="5"
-              cx={_xScale()(obj.salary)}
-              cy={_yScale()(obj.friends)}
-            />
-          ))}
-        </g>
-      </Svg>
+      <Container>
+        <CSVTable
+          csv={`friends,salary\n${scatterData
+            .map(obj => `${obj.friends},${obj.salary}`)
+            .join('\n')}`}
+        />
+        <Svg>
+          <g transform="translate(30, 30)">
+            <g ref={el => d3.select(el).call(_xAxis())} />
+            <g ref={el => d3.select(el).call(_yAxis())} />
+            {scatterData.map((obj, i) => (
+              <circle
+                key={i}
+                r="5"
+                cx={_xScale()(obj.salary)}
+                cy={_yScale()(obj.friends)}
+              />
+            ))}
+          </g>
+        </Svg>
+      </Container>
     );
   }
 

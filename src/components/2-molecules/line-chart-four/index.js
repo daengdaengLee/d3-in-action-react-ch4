@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
+import CSVTable from '../csv-table';
 import tweetdataCSV from '../../../assets/resources/tweetdata';
 
 const xScale = d3
@@ -40,9 +41,15 @@ const favLine = d3
   .x(d => xScale(d.day))
   .y(d => yScale(d.favorites));
 
-const Svg = styled.svg`
+const Container = styled.div`
   width: 100%;
   height: 99%;
+  display: flex;
+`;
+
+const Svg = styled.svg`
+  width: 0;
+  flex-grow: 1;
 `;
 
 class LineChartFour extends Component {
@@ -56,57 +63,60 @@ class LineChartFour extends Component {
   render() {
     const { csv } = this.state;
     return (
-      <Svg>
-        <g transform="translate(50, 50)">
-          <g ref={el => d3.select(el).call(xAxis)} />
-          <g ref={el => d3.select(el).call(yAxis)} />
-          {csv.map(obj => (
-            <circle
-              key={obj.day}
-              r="5"
-              cx={xScale(obj.day)}
-              cy={yScale(obj.tweets)}
-              fill="black"
+      <Container>
+        <CSVTable csv={tweetdataCSV} />
+        <Svg>
+          <g transform="translate(50, 50)">
+            <g ref={el => d3.select(el).call(xAxis)} />
+            <g ref={el => d3.select(el).call(yAxis)} />
+            {csv.map(obj => (
+              <circle
+                key={obj.day}
+                r="5"
+                cx={xScale(obj.day)}
+                cy={yScale(obj.tweets)}
+                fill="black"
+              />
+            ))}
+            {csv.map(obj => (
+              <circle
+                key={obj.day}
+                r="5"
+                cx={xScale(obj.day)}
+                cy={yScale(obj.retweets)}
+                fill="lightgray"
+              />
+            ))}
+            {csv.map(obj => (
+              <circle
+                key={obj.day}
+                r="5"
+                cx={xScale(obj.day)}
+                cy={yScale(obj.favorites)}
+                fill="gray"
+              />
+            ))}
+            <path
+              d={tweetLine.curve(d3.curveCardinal)(csv)}
+              fill="none"
+              stroke="darkred"
+              strokeWidth="2"
             />
-          ))}
-          {csv.map(obj => (
-            <circle
-              key={obj.day}
-              r="5"
-              cx={xScale(obj.day)}
-              cy={yScale(obj.retweets)}
-              fill="lightgray"
+            <path
+              d={retweetLine.curve(d3.curveBasis)(csv)}
+              fill="none"
+              stroke="gray"
+              strokeWidth="3"
             />
-          ))}
-          {csv.map(obj => (
-            <circle
-              key={obj.day}
-              r="5"
-              cx={xScale(obj.day)}
-              cy={yScale(obj.favorites)}
-              fill="gray"
+            <path
+              d={favLine.curve(d3.curveStepBefore)(csv)}
+              fill="none"
+              stroke="black"
+              strokeWidth="2"
             />
-          ))}
-          <path
-            d={tweetLine.curve(d3.curveCardinal)(csv)}
-            fill="none"
-            stroke="darkred"
-            strokeWidth="2"
-          />
-          <path
-            d={retweetLine.curve(d3.curveBasis)(csv)}
-            fill="none"
-            stroke="gray"
-            strokeWidth="3"
-          />
-          <path
-            d={favLine.curve(d3.curveStepBefore)(csv)}
-            fill="none"
-            stroke="black"
-            strokeWidth="2"
-          />
-        </g>
-      </Svg>
+          </g>
+        </Svg>
+      </Container>
     );
   }
 

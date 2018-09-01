@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import JSONTable from '../json-table';
 import tweetsJSON from '../../../assets/resources/tweets';
 
-const Svg = styled.svg`
+const Container = styled.div`
   width: 100%;
   height: 99%;
+  display: flex;
+`;
+
+const Svg = styled.svg`
+  width: 0;
+  flex-grow: 1;
 `;
 
 class PieChartFive extends Component {
@@ -22,22 +29,25 @@ class PieChartFive extends Component {
   render() {
     const { _newArc, _pieChartData, _handleClickPie } = this;
     return (
-      <Svg>
-        <g transform="translate(250, 250)">
-          {_pieChartData().map(d => (
-            <path
-              key={d.data.key}
-              d={_newArc()(d)}
-              onClick={_handleClickPie}
-              fill="blue"
-              opacity="0.5"
-              stroke="black"
-              strokeWidth="2px"
-              cursor="pointer"
-            />
-          ))}
-        </g>
-      </Svg>
+      <Container>
+        <JSONTable json={tweetsJSON.tweets} />
+        <Svg>
+          <g transform="translate(250, 250)">
+            {_pieChartData().map(d => (
+              <path
+                key={d.data.key}
+                d={_newArc()(d)}
+                onClick={_handleClickPie}
+                fill="blue"
+                opacity="0.5"
+                stroke="black"
+                strokeWidth="2px"
+                cursor="pointer"
+              />
+            ))}
+          </g>
+        </Svg>
+      </Container>
     );
   }
 
