@@ -6,12 +6,12 @@ import MainChartCanvas from 'components/3-organisms/main-chart-canvas';
 
 const MainPage = ({
   match: {
-    params: { page },
+    params: { page, chapter },
   },
 }) => (
   <MainTemplate
     top={() => <MainHeader />}
-    left={() => <MainNavigation page={page} />}
+    left={() => <MainNavigation page={page} chapter={chapter} />}
     center={() => <MainChartCanvas />}
   />
 );

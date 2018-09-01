@@ -31,7 +31,7 @@ const yAxis = d3
   .ticks(8)
   .tickSize(-470);
 
-class BoxplotChart extends Component {
+class BoxplotChartFour extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -136,4 +136,4 @@ class BoxplotChart extends Component {
   }
 }
 
-export default BoxplotChart;
+export default BoxplotChartFour;

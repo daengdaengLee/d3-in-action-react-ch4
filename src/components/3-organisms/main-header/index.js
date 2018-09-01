@@ -15,7 +15,7 @@ const Title = styled.h1`
 
 const MainHeader = () => (
   <Header>
-    <Title>D3 in Action Chapter 4 Example wrapped with React</Title>
+    <Title>D3 in Action Examples wrapped with React</Title>
   </Header>
 );
 

@@ -16,7 +16,7 @@ injectGlobal`
 ReactDOM.render(
   <Router>
     <Switch>
-      <Route path="/:page" component={MainPage} />
+      <Route path="/:chapter/:page" component={MainPage} />
       <Route component={MainPage} />
     </Switch>
   </Router>,
