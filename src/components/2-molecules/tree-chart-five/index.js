@@ -1,10 +1,18 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import JSONTable from '../json-table';
+import tweetsJSON from '../../../assets/resources/tweets';
+
+const Container = styled.div`
+  width: 100%;
+  height: 99%;
+  display: flex;
+`;
 
 const Svg = styled.svg`
-  width: 100%;
-  height: 80%;
+  width: 0;
+  flex-grow: 1;
 `;
 
 class TreeChartFive extends Component {
@@ -36,9 +44,12 @@ class TreeChartFive extends Component {
     const nodes = !tree.descendants ? [] : tree.descendants();
     const links = !tree.links ? [] : tree.links();
     return (
-      <Fragment>
-        <button onClick={() => _changeDirection('V')}>Vertical</button>
-        <button onClick={() => _changeDirection('H')}>Horizontal</button>
+      <Container>
+        <div>
+          <JSONTable json={tweetsJSON.tweets} />
+          <button onClick={() => _changeDirection('V')}>Vertical</button>
+          <button onClick={() => _changeDirection('H')}>Horizontal</button>
+        </div>
         <Svg innerRef={el => d3.select(el).call(_treeZoom())}>
           <g className="treeG" transform="translate(40, 40)" ref={treeG}>
             {links.map((obj, i) => (
@@ -75,22 +86,20 @@ class TreeChartFive extends Component {
             ))}
           </g>
         </Svg>
-      </Fragment>
+      </Container>
     );
   }
 
   componentDidMount() {
-    d3.json('/tweets.json')
-      .then(res => res.tweets)
-      .then(tweets =>
-        d3
-          .nest()
-          .key(obj => obj.user)
-          .entries(tweets),
-      )
-      .then(nestedTweets => ({ key: 'All Tweets', values: nestedTweets }))
-      .then(data => this.setState({ data }))
-      .catch(() => this.setState({ data: {} }));
+    const { tweets } = tweetsJSON;
+    const nestedTweets = {
+      key: 'All Tweets',
+      values: d3
+        .nest()
+        .key(obj => obj.user)
+        .entries(tweets),
+    };
+    this.setState({ data: nestedTweets });
   }
 
   _depthScale(depth) {

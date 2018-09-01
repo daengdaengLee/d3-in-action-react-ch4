@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { HashRouter as Router, Route, Switch } from 'react-router-dom';
 import { injectGlobal } from 'styled-components';
 import reset from 'styled-reset';
 import MainPage from 'components/5-pages/main-page';

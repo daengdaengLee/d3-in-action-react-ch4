@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import JSONTable from '../json-table';
+import tweetsJSON from '../../../assets/resources/tweets';
 
-const Svg = styled.svg`
+const Container = styled.div`
   width: 100%;
   height: 99%;
+  display: flex;
+`;
+
+const Svg = styled.svg`
+  width: 0;
+  flex-grow: 1;
 `;
 
 class CirclePackFive extends Component {
@@ -19,34 +27,35 @@ class CirclePackFive extends Component {
     const { _packChart, _depthScale } = this;
     const { data } = this.state;
     return (
-      <Svg>
-        <g transform="translate(250, 250)">
-          {_packChart(data).map((obj, i) => (
-            <circle
-              key={i}
-              r={obj.r}
-              cx={obj.x}
-              cy={obj.y}
-              fill={_depthScale(obj.depth)}
-            />
-          ))}
-        </g>
-      </Svg>
+      <Container>
+        <JSONTable json={tweetsJSON.tweets} />
+        <Svg>
+          <g transform="translate(150, 150)">
+            {_packChart(data).map((obj, i) => (
+              <circle
+                key={i}
+                r={obj.r}
+                cx={obj.x}
+                cy={obj.y}
+                fill={_depthScale(obj.depth)}
+              />
+            ))}
+          </g>
+        </Svg>
+      </Container>
     );
   }
 
   componentDidMount() {
-    d3.json('/tweets.json')
-      .then(res => res.tweets)
-      .then(tweets =>
-        d3
-          .nest()
-          .key(obj => obj.user)
-          .entries(tweets),
-      )
-      .then(nestedTweets => ({ key: 'All Tweets', values: nestedTweets }))
-      .then(data => this.setState({ data }))
-      .catch(() => this.setState({ data: {} }));
+    const { tweets } = tweetsJSON;
+    const nestedTweets = {
+      key: 'All Tweets',
+      values: d3
+        .nest()
+        .key(tweet => tweet.user)
+        .entries(tweets),
+    };
+    this.setState({ data: nestedTweets });
   }
 
   _depthScale(depth) {

@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import CSVTable from '../csv-table';
+import moviesCSV from '../../../assets/resources/movies';
 
-const Svg = styled.svg`
+const Container = styled.div`
   width: 100%;
   height: 99%;
+  display: flex;
+`;
+
+const Svg = styled.svg`
+  width: 0;
+  flex-grow: 1;
 `;
 
 class StackBarFive extends Component {
@@ -34,38 +42,38 @@ class StackBarFive extends Component {
     const stackData = data.length === 0 ? [] : _stackLayout(data);
     stackData.sort((a, b) => a.index - b.index);
     return (
-      <Svg>
-        <g transform="translate(80, 80)">
-          <g className="xAxisG" ref={el => d3.select(el).call(xAxis)} />
-          <g className="yAxisG" ref={el => d3.select(el).call(yAxis)} />
-          {stackData.map(stack => (
-            <g key={stack.key}>
-              {stack.map((obj, i) => (
-                <rect
-                  key={i}
-                  x={xScale(obj.data.day) - 15}
-                  y={yScale(obj[1])}
-                  width="30"
-                  height={Math.abs(yScale(obj[0]) - yScale(obj[1]))}
-                  fill={_colorScale(stack.key)}
-                />
-              ))}
-            </g>
-          ))}
-        </g>
-      </Svg>
+      <Container>
+        <CSVTable csv={moviesCSV} />
+        <Svg>
+          <g transform="translate(80, 80)">
+            <g className="xAxisG" ref={el => d3.select(el).call(xAxis)} />
+            <g className="yAxisG" ref={el => d3.select(el).call(yAxis)} />
+            {stackData.map(stack => (
+              <g key={stack.key}>
+                {stack.map((obj, i) => (
+                  <rect
+                    key={i}
+                    x={xScale(obj.data.day) - 15}
+                    y={yScale(obj[1])}
+                    width="30"
+                    height={Math.abs(yScale(obj[0]) - yScale(obj[1]))}
+                    fill={_colorScale(stack.key)}
+                  />
+                ))}
+              </g>
+            ))}
+          </g>
+        </Svg>
+      </Container>
     );
   }
 
   componentDidMount() {
-    d3.csv('/movies.csv')
-      .then(data => {
-        data.forEach(obj =>
-          Object.keys(obj).forEach(key => (obj[key] = parseInt(obj[key], 10))),
-        );
-        return data;
-      })
-      .then(data => this.setState({ data }));
+    const csv = d3.csvParse(moviesCSV);
+    csv.forEach(obj =>
+      Object.keys(obj).forEach(key => (obj[key] = parseInt(obj[key], 10))),
+    );
+    this.setState({ data: csv });
   }
 
   _xScale() {

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import * as d3 from 'd3';
 import styled from 'styled-components';
+import CSVTable from '../csv-table';
+import moviesCSV from '../../../assets/resources/movies';
 
 const simpleStacking = (incomingData, incomingAttribute) => {
   const keys = Object.keys(incomingData);
@@ -102,9 +104,15 @@ const movieStream = (name, i) =>
     .y0(d => yStreamScale(streamStacking(d, name, 'bottom', i)))
     .curve(d3.curveBasis);
 
-const Svg = styled.svg`
+const Container = styled.div`
   width: 100%;
   height: 99%;
+  display: flex;
+`;
+
+const Svg = styled.svg`
+  width: 0;
+  flex-grow: 1;
 `;
 
 class StreamChartFour extends Component {
@@ -119,57 +127,61 @@ class StreamChartFour extends Component {
     const { csv } = this.state;
     const movieNames = Object.keys(csv[0] || {}).filter(name => name !== 'day');
     return (
-      <Svg>
-        <g transform="translate(20, 50)">
-          <g ref={el => d3.select(el).call(xAxis)} />
-          <g ref={el => d3.select(el).call(yAxis)} />
-          {movieNames.map((name, i) => (
-            <path
-              key={name}
-              d={movieArea(name)(csv)}
-              fill={fillScale(i)}
-              stroke="none"
-              strokeWidth="2"
-              opacity="0.5"
+      <Container>
+        <CSVTable csv={moviesCSV} />
+        <Svg>
+          <g transform="translate(20, 50)">
+            <g ref={el => d3.select(el).call(xAxis)} />
+            <g ref={el => d3.select(el).call(yAxis)} />
+            {movieNames.map((name, i) => (
+              <path
+                key={name}
+                d={movieArea(name)(csv)}
+                fill={fillScale(i)}
+                stroke="none"
+                strokeWidth="2"
+                opacity="0.5"
+              />
+            ))}
+          </g>
+          <g className="__StreamG" transform="translate(520, 50)">
+            <g ref={el => d3.select(el).call(xStreamAxis)} />
+            <g
+              className="__YAxisG"
+              ref={el => {
+                d3.select(el).call(yStreamAxis);
+                d3.selectAll('.__StreamG .__YAxisG .tick line').style(
+                  'stroke-dasharray',
+                  d => {
+                    if (Math.floor(Math.abs(d) / 10) % 2 === 0) return null;
+                    return 4;
+                  },
+                );
+                d3.selectAll('.__StreamG .__YAxisG .tick text').text(d => {
+                  if (Math.floor(Math.abs(d) / 10) % 2 === 0) return d;
+                  return null;
+                });
+              }}
             />
-          ))}
-        </g>
-        <g className="__StreamG" transform="translate(520, 50)">
-          <g ref={el => d3.select(el).call(xStreamAxis)} />
-          <g
-            className="__YAxisG"
-            ref={el => {
-              d3.select(el).call(yStreamAxis);
-              d3.selectAll('.__StreamG .__YAxisG .tick line').style(
-                'stroke-dasharray',
-                d => {
-                  if (Math.floor(Math.abs(d) / 10) % 2 === 0) return null;
-                  return 4;
-                },
-              );
-              d3.selectAll('.__StreamG .__YAxisG .tick text').text(d => {
-                if (Math.floor(Math.abs(d) / 10) % 2 === 0) return d;
-                return null;
-              });
-            }}
-          />
-          {movieNames.reverse().map((name, i, { length }) => (
-            <path
-              key={name}
-              d={movieStream(name, length - i - 1)(csv)}
-              fill={fillScale(i)}
-              stroke="white"
-              strokeWidth="1"
-              opacity="1"
-            />
-          ))}
-        </g>
-      </Svg>
+            {movieNames.reverse().map((name, i, { length }) => (
+              <path
+                key={name}
+                d={movieStream(name, length - i - 1)(csv)}
+                fill={fillScale(i)}
+                stroke="white"
+                strokeWidth="1"
+                opacity="1"
+              />
+            ))}
+          </g>
+        </Svg>
+      </Container>
     );
   }
 
   componentDidMount() {
-    d3.csv('/movies.csv').then(csv => this.setState({ csv }));
+    const csv = d3.csvParse(moviesCSV);
+    this.setState({ csv });
   }
 }
 

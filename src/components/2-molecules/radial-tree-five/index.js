@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import JSONTable from '../json-table';
+import tweetsJSON from '../../../assets/resources/tweets';
 
-const Svg = styled.svg`
+const Container = styled.div`
   width: 100%;
   height: 99%;
+  display: flex;
+`;
+
+const Svg = styled.svg`
+  width: 0;
+  flex-grow: 1;
 `;
 
 class RadialTreeFive extends Component {
@@ -33,49 +41,52 @@ class RadialTreeFive extends Component {
     const nodes = !cluster.descendants ? [] : cluster.descendants();
     const links = !cluster.links ? [] : cluster.links();
     return (
-      <Svg innerRef={el => d3.select(el).call(_zoom())}>
-        <g className="clusterG" transform="translate(40, 40)" ref={clusterG}>
-          {links.map((link, i) => (
-            <path
-              key={i}
-              d={_lineGenerator(link)}
-              fill="none"
-              stroke="black"
-              strokeWidth="2px"
-            />
-          ))}
-          {nodes.map((node, i) => (
-            <g
-              key={i}
-              className="node"
-              transform={`translate(${_project(node.x, node.y)})`}
-            >
-              <circle
-                r="10"
-                fill={_depthScale(node.depth)}
-                stroke="white"
+      <Container>
+        <JSONTable json={tweetsJSON.tweets} />
+        <Svg innerRef={el => d3.select(el).call(_zoom())}>
+          <g className="clusterG" transform="translate(40, 40)" ref={clusterG}>
+            {links.map((link, i) => (
+              <path
+                key={i}
+                d={_lineGenerator(link)}
+                fill="none"
+                stroke="black"
                 strokeWidth="2px"
               />
-              <text>{node.data.id || node.data.key || node.data.content}</text>
-            </g>
-          ))}
-        </g>
-      </Svg>
+            ))}
+            {nodes.map((node, i) => (
+              <g
+                key={i}
+                className="node"
+                transform={`translate(${_project(node.x, node.y)})`}
+              >
+                <circle
+                  r="10"
+                  fill={_depthScale(node.depth)}
+                  stroke="white"
+                  strokeWidth="2px"
+                />
+                <text>
+                  {node.data.id || node.data.key || node.data.content}
+                </text>
+              </g>
+            ))}
+          </g>
+        </Svg>
+      </Container>
     );
   }
 
   componentDidMount() {
-    d3.json('/tweets.json')
-      .then(res => res.tweets)
-      .then(tweets =>
-        d3
-          .nest()
-          .key(obj => obj.user)
-          .entries(tweets),
-      )
-      .then(nestedTweets => ({ key: 'All Tweets', values: nestedTweets }))
-      .then(data => this.setState({ data }))
-      .catch(() => this.setState({ data: [] }));
+    const { tweets } = tweetsJSON;
+    const data = {
+      key: 'All tweets',
+      values: d3
+        .nest()
+        .key(obj => obj.user)
+        .entries(tweets),
+    };
+    this.setState({ data });
   }
 
   _depthScale(depth) {

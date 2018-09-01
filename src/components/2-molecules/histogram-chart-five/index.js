@@ -1,12 +1,20 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import * as d3 from 'd3';
+import JSONTable from '../json-table';
+import tweetsJSON from '../../../assets/resources/tweets';
 
 import './index.css';
 
-const Svg = styled.svg`
+const Container = styled.div`
   width: 100%;
   height: 99%;
+  display: flex;
+`;
+
+const Svg = styled.svg`
+  width: 0;
+  flex-grow: 1;
 `;
 
 class HistoRect extends Component {
@@ -55,8 +63,7 @@ class HistoRect extends Component {
   }
 
   componentWillUnmount() {
-    d3.select(this.rect.current)
-      .interrupt();
+    d3.select(this.rect.current).interrupt();
   }
 }
 
@@ -76,31 +83,32 @@ class HistogramChartFive extends Component {
     const { _xAxis, _histoData, _xScale, _yScale, _toggleHisto } = this;
     const { histo, data } = this.state;
     return (
-      <Svg className="__Histo">
-        <g transform="translate(40, 40)">
-          <g ref={_xAxis} className="axis" transform="translate(0, 400)" />
-          {data.length > 0 &&
-            _histoData(d => d[histo].length).map(obj => (
-              // <rect
-              <HistoRect
-                key={obj.x0}
-                className="__Histo_Rect"
-                x={_xScale()(obj.x0)}
-                y={_yScale()(obj.length)}
-                width={_xScale()(obj.x1 - obj.x0) - 2}
-                height={400 - _yScale()(obj.length)}
-                onClick={_toggleHisto}
-              />
-            ))}
-        </g>
-      </Svg>
+      <Container>
+        <JSONTable json={tweetsJSON.tweets} />
+        <Svg className="__Histo">
+          <g transform="translate(40, 40)">
+            <g ref={_xAxis} className="axis" transform="translate(0, 400)" />
+            {data.length > 0 &&
+              _histoData(d => d[histo].length).map(obj => (
+                // <rect
+                <HistoRect
+                  key={obj.x0}
+                  className="__Histo_Rect"
+                  x={_xScale()(obj.x0)}
+                  y={_yScale()(obj.length)}
+                  width={_xScale()(obj.x1 - obj.x0) - 2}
+                  height={400 - _yScale()(obj.length)}
+                  onClick={_toggleHisto}
+                />
+              ))}
+          </g>
+        </Svg>
+      </Container>
     );
   }
 
   componentDidMount() {
-    d3.json('/tweets.json')
-      .then(res => this.setState({ data: res.tweets }))
-      .catch(() => this.setState({ data: [] }));
+    this.setState({ data: tweetsJSON.tweets });
   }
 
   _xScale() {

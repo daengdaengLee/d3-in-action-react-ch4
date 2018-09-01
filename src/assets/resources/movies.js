@@ -1,4 +1,4 @@
-day,movie1,movie2,movie3,movie4,movie5,movie6
+const movies = `day,movie1,movie2,movie3,movie4,movie5,movie6
 1,20,8,3,0,0,0
 2,18,5,1,13,0,0
 3,14,3,1,10,0,0
@@ -8,4 +8,6 @@ day,movie1,movie2,movie3,movie4,movie5,movie6
 7,2,0,0,0,8,12
 8,0,0,0,0,6,11
 9,0,0,0,0,3,9
-10,0,0,0,0,1,8
+10,0,0,0,0,1,8`;
+
+export default movies;
