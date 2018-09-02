@@ -5,7 +5,8 @@ const Header = styled.header`
   display: flex;
   height: 100%;
   align-items: center;
-  padding-left: 4rem;
+  justify-content: space-between;
+  padding: 0 4rem;
 `;
 
 const Title = styled.h1`
@@ -16,6 +17,13 @@ const Title = styled.h1`
 const MainHeader = () => (
   <Header>
     <Title>D3 in Action Examples wrapped with React</Title>
+    <a
+      href="https://github.com/daengdaengLee/d3-in-react"
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      Github
+    </a>
   </Header>
 );
 
