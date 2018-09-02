@@ -16,6 +16,7 @@ const navigations = [
   { chapter: '5', page: 'stack-bar', name: '5-StackBar' },
   { chapter: '5', page: 'sankey', name: '5-Sankey' },
   { chapter: '5', page: 'word-cloud', name: '5-WordCloud' },
+  { chapter: '6', page: 'adjacency-matrix', name: '5-AdjacencyMatrix' },
 ];
 
 const Nav = styled.nav`
