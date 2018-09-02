@@ -8,11 +8,13 @@ const Container = styled.div`
   width: 100%;
   height: 99%;
   display: flex;
+  flex-direction: column;
+  overflow: auto;
 `;
 
 const Svg = styled.svg`
-  width: 0;
-  flex-grow: 1;
+  width: 100%;
+  min-height: 600px;
 `;
 
 class TreeChartFive extends Component {
@@ -46,7 +48,6 @@ class TreeChartFive extends Component {
     return (
       <Container>
         <div>
-          <JSONTable json={tweetsJSON.tweets} />
           <button onClick={() => _changeDirection('V')}>Vertical</button>
           <button onClick={() => _changeDirection('H')}>Horizontal</button>
         </div>
@@ -86,6 +87,7 @@ class TreeChartFive extends Component {
             ))}
           </g>
         </Svg>
+        <JSONTable json={tweetsJSON.tweets} />
       </Container>
     );
   }

@@ -18,8 +18,7 @@ const Container = styled.div`
 
 const Svg = styled.svg`
   width: 100%;
-  height: 800px;
-  min-height: 800px;
+  min-height: 640px;
 `;
 
 const Textarea = styled.textarea`
@@ -66,7 +65,6 @@ class SankeyChartFive extends Component {
     const intensityRamp = _intensityRamp(_.max(links, obj => obj.value).value);
     return (
       <Container>
-        <Textarea disabled value={jsonStr} />
         <ButtonContainer>
           <button onClick={_onClickRectStyle}>Rect</button>
           <button onClick={_onClickCircleStyle}>Circle</button>
@@ -118,6 +116,7 @@ class SankeyChartFive extends Component {
             ))}
           </g>
         </Svg>
+        <Textarea disabled value={jsonStr} />
       </Container>
     );
   }

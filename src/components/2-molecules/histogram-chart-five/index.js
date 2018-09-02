@@ -10,11 +10,13 @@ const Container = styled.div`
   width: 100%;
   height: 99%;
   display: flex;
+  flex-direction: column;
+  overflow: auto;
 `;
 
 const Svg = styled.svg`
-  width: 0;
-  flex-grow: 1;
+  min-height: 600px;
+  width: 100%;
 `;
 
 class HistoRect extends Component {
@@ -84,7 +86,6 @@ class HistogramChartFive extends Component {
     const { histo, data } = this.state;
     return (
       <Container>
-        <JSONTable json={tweetsJSON.tweets} />
         <Svg className="__Histo">
           <g transform="translate(40, 40)">
             <g ref={_xAxis} className="axis" transform="translate(0, 400)" />
@@ -103,6 +104,7 @@ class HistogramChartFive extends Component {
               ))}
           </g>
         </Svg>
+        <JSONTable json={tweetsJSON.tweets} />
       </Container>
     );
   }

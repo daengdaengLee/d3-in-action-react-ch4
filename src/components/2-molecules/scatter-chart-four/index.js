@@ -7,11 +7,12 @@ const Container = styled.div`
   width: 100%;
   height: 99%;
   display: flex;
+  flex-direction: column;
+  overflow: auto;
 `;
 
 const Svg = styled.svg`
-  width: 0;
-  flex-grow: 1;
+  min-height: 680px;
 `;
 
 class ScatterChartFour extends Component {

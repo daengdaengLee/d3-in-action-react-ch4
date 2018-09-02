@@ -108,11 +108,12 @@ const Container = styled.div`
   width: 100%;
   height: 99%;
   display: flex;
+  flex-direction: column;
+  overflow: auto;
 `;
 
 const Svg = styled.svg`
-  width: 0;
-  flex-grow: 1;
+  min-height: 1500px;
 `;
 
 class StreamChartFour extends Component {
@@ -144,7 +145,7 @@ class StreamChartFour extends Component {
               />
             ))}
           </g>
-          <g className="__StreamG" transform="translate(520, 50)">
+          <g className="__StreamG" transform="translate(20, 650)">
             <g ref={el => d3.select(el).call(xStreamAxis)} />
             <g
               className="__YAxisG"

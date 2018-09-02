@@ -8,11 +8,13 @@ const Container = styled.div`
   width: 100%;
   height: 99%;
   display: flex;
+  flex-direction: column;
+  overflow: auto;
 `;
 
 const Svg = styled.svg`
-  width: 0;
-  flex-grow: 1;
+  min-height: 680px;
+  width: 100%;
 `;
 
 class CirclePackFive extends Component {
@@ -28,7 +30,6 @@ class CirclePackFive extends Component {
     const { data } = this.state;
     return (
       <Container>
-        <JSONTable json={tweetsJSON.tweets} />
         <Svg>
           <g transform="translate(150, 150)">
             {_packChart(data).map((obj, i) => (
@@ -42,6 +43,7 @@ class CirclePackFive extends Component {
             ))}
           </g>
         </Svg>
+        <JSONTable json={tweetsJSON.tweets} />
       </Container>
     );
   }
