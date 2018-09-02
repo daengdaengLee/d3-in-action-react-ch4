@@ -70,11 +70,28 @@ class ArcDiagramSix extends Component {
     this.state = {
       nodes: csvParse(nodelistCSV),
       edges: csvParse(edgelistCSV),
+      highlightedNodeId: '',
+      highlightedEdgeIds: [],
     };
+    this._onMouseOverNode = this._onMouseOverNode.bind(this);
+    this._onMouseOutNode = this._onMouseOutNode.bind(this);
+    this._onMouseOverEdge = this._onMouseOverEdge.bind(this);
+    this._onMouseOutEdge = this._onMouseOutEdge.bind(this);
   }
 
   render() {
-    const { nodes: _nodes, edges: _edges } = this.state;
+    const {
+      _onMouseOverNode,
+      _onMouseOutNode,
+      _onMouseOverEdge,
+      _onMouseOutEdge,
+    } = this;
+    const {
+      nodes: _nodes,
+      edges: _edges,
+      highlightedNodeId,
+      highlightedEdgeIds,
+    } = this.state;
     const { nodes, edges } = _createArcDiagram(_nodes, _edges);
     return (
       <Container>
@@ -87,8 +104,10 @@ class ArcDiagramSix extends Component {
                 strokeWidth={edge.weight * 2}
                 opacity="0.25"
                 d={_arc(edge)}
-                stroke="black"
+                stroke={highlightedEdgeIds.includes(edge.id) ? 'red' : 'black'}
                 fill="none"
+                onMouseOver={() => _onMouseOverEdge(edge.id)}
+                onMouseOut={_onMouseOutEdge}
               />
             ))}
             {nodes.map(node => (
@@ -97,9 +116,11 @@ class ArcDiagramSix extends Component {
                 className="node"
                 r="10"
                 cx={node.x}
-                fill="lightgray"
+                fill={highlightedNodeId === node.id ? 'red' : 'lightgray'}
                 stroke="black"
                 strokeWidth="1px"
+                onMouseOver={() => _onMouseOverNode(node.id)}
+                onMouseOut={_onMouseOutNode}
               />
             ))}
           </g>
@@ -122,6 +143,33 @@ class ArcDiagramSix extends Component {
         </Tables>
       </Container>
     );
+  }
+
+  _onMouseOverNode(nodeId) {
+    this.setState(prevState => ({
+      highlightedNodeId: nodeId,
+      highlightedEdgeIds: _.compose(
+        _.partial(_.map, _, edge => `${edge.source}-${edge.target}`),
+        _.partial(
+          _.filter,
+          _,
+          edge =>
+            _.isEqual(edge.source, nodeId) || _.isEqual(edge.target, nodeId),
+        ),
+      )(prevState.edges),
+    }));
+  }
+
+  _onMouseOutNode() {
+    this.setState({ highlightedNodeId: '', highlightedEdgeIds: [] });
+  }
+
+  _onMouseOverEdge(edgeId) {
+    this.setState({ highlightedEdgeIds: [edgeId] });
+  }
+
+  _onMouseOutEdge() {
+    this.setState({ highlightedEdgeIds: [] });
   }
 }
 
