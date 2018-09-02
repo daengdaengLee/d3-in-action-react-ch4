@@ -14,6 +14,7 @@ const navigations = [
   { chapter: '5', page: 'radial-tree', name: '5-RadialTree' },
   { chapter: '5', page: 'stack', name: '5-Stack' },
   { chapter: '5', page: 'stack-bar', name: '5-StackBar' },
+  { chapter: '5', page: 'sankey', name: '5-Sankey' },
 ];
 
 const Nav = styled.nav`
