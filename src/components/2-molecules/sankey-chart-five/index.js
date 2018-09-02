@@ -35,9 +35,11 @@ class SankeyChartFive extends Component {
     this.state = {
       nodeStyle: 'rect',
       jsonStr: JSON.stringify(sitestatsJSON, null, 2),
+      numLayouts: 1,
     };
     this._onClickCircleStyle = this._onClickCircleStyle.bind(this);
     this._onClickRectStyle = this._onClickRectStyle.bind(this);
+    this._onClickChart = this._onClickChart.bind(this);
   }
 
   render() {
@@ -48,10 +50,16 @@ class SankeyChartFive extends Component {
       _onMouseOver,
       _onClickCircleStyle,
       _onClickRectStyle,
+      _onClickChart,
     } = this;
-    const { nodeStyle, jsonStr } = this.state;
+    const { nodeStyle, jsonStr, numLayouts } = this.state;
     const { nodes, links } = sitestatsJSON;
-    const sankey = _sankey(nodes, links, nodeStyle === 'rect' ? 20 : 1);
+    const sankey = _sankey(
+      nodes,
+      links,
+      numLayouts,
+      nodeStyle === 'rect' ? 20 : 1,
+    );
     const intensityRamp = _intensityRamp(_.max(links, obj => obj.value).value);
     return (
       <Container>
@@ -60,7 +68,7 @@ class SankeyChartFive extends Component {
           <button onClick={_onClickRectStyle}>Rect</button>
           <button onClick={_onClickCircleStyle}>Circle</button>
         </ButtonContainer>
-        <Svg>
+        <Svg onClick={_onClickChart}>
           <g transform="translate(60, 20)" className="sankeyG">
             {sankey.links.sort((a, b) => b.width - a.width).map(link => (
               <path
@@ -111,14 +119,14 @@ class SankeyChartFive extends Component {
     );
   }
 
-  _sankey(nodes, links, nodeWidth) {
+  _sankey(nodes, links, numLayouts, nodeWidth) {
     return sankey()
       .nodeWidth(nodeWidth)
       .nodePadding(200)
       .size([460, 460])
       .nodes(nodes)
       .links(links)
-      .iterations(200)();
+      .iterations(numLayouts)();
   }
 
   _intensityRamp(domainMax) {
@@ -142,6 +150,13 @@ class SankeyChartFive extends Component {
 
   _onClickCircleStyle() {
     this.setState({ nodeStyle: 'circle' });
+  }
+
+  _onClickChart() {
+    this.setState(prevState => ({
+      ...prevState,
+      numLayouts: prevState.numLayouts + 20,
+    }));
   }
 }
 
