@@ -4,6 +4,9 @@ import { sankey, sankeyLinkHorizontal } from 'd3-sankey';
 import * as d3 from 'd3';
 import _ from 'underscore';
 import sitestatsJSON from 'assets/resources/sitestats';
+import sitestatsJSONForStr from 'assets/resources/sitestats';
+
+const jsonStr = JSON.stringify(sitestatsJSONForStr, null, 2);
 
 const Container = styled.div`
   width: 100%;
@@ -34,7 +37,7 @@ class SankeyChartFive extends Component {
     super(props);
     this.state = {
       nodeStyle: 'rect',
-      jsonStr: JSON.stringify(sitestatsJSON, null, 2),
+      jsonStr,
       numLayouts: 1,
     };
     this._onClickCircleStyle = this._onClickCircleStyle.bind(this);
