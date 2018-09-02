@@ -8,11 +8,13 @@ const Container = styled.div`
   width: 100%;
   height: 99%;
   display: flex;
+  flex-direction: column;
+  overflow: auto;
 `;
 
 const Svg = styled.svg`
-  width: 0;
-  flex-grow: 1;
+  width: 100%;
+  min-height: 700px;
 `;
 
 class StackBarFive extends Component {
@@ -43,7 +45,6 @@ class StackBarFive extends Component {
     stackData.sort((a, b) => a.index - b.index);
     return (
       <Container>
-        <CSVTable csv={moviesCSV} />
         <Svg>
           <g transform="translate(80, 80)">
             <g className="xAxisG" ref={el => d3.select(el).call(xAxis)} />
@@ -64,6 +65,7 @@ class StackBarFive extends Component {
             ))}
           </g>
         </Svg>
+        <CSVTable csv={moviesCSV} />
       </Container>
     );
   }

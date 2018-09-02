@@ -8,11 +8,13 @@ const Container = styled.div`
   width: 100%;
   height: 99%;
   display: flex;
+  flex-direction: column;
+  overflow: auto;
 `;
 
 const Svg = styled.svg`
-  width: 0;
-  flex-grow: 1;
+  min-height: 600px;
+  width: 100%;
 `;
 
 class RadialTreeFive extends Component {
@@ -42,7 +44,6 @@ class RadialTreeFive extends Component {
     const links = !cluster.links ? [] : cluster.links();
     return (
       <Container>
-        <JSONTable json={tweetsJSON.tweets} />
         <Svg innerRef={el => d3.select(el).call(_zoom())}>
           <g className="clusterG" transform="translate(40, 40)" ref={clusterG}>
             {links.map((link, i) => (
@@ -73,6 +74,7 @@ class RadialTreeFive extends Component {
             ))}
           </g>
         </Svg>
+        <JSONTable json={tweetsJSON.tweets} />
       </Container>
     );
   }

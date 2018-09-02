@@ -14,6 +14,7 @@ import StackChartFive from 'components/2-molecules/stack-chart-five';
 import StackBarFive from 'components/2-molecules/stack-bar-five';
 import SankeyChartFive from 'components/2-molecules/sankey-chart-five';
 import WordCloudFive from 'components/2-molecules/word-cloud-five';
+import AdjacencyMatrixSix from 'components/2-molecules/adjacency-matrix-six';
 
 const CanvasContainer = styled.div`
   width: 100%;
@@ -35,6 +36,7 @@ const MainChartCanvas = () => (
     <Route path="/5/stack-bar" component={StackBarFive} />
     <Route path="/5/sankey" component={SankeyChartFive} />
     <Route path="/5/word-cloud" component={WordCloudFive} />
+    <Route path="/6/adjacency-matrix" component={AdjacencyMatrixSix} />
   </CanvasContainer>
 );
 

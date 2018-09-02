@@ -8,11 +8,13 @@ const Container = styled.div`
   width: 100%;
   height: 99%;
   display: flex;
+  flex-direction: column;
+  overflow: auto;
 `;
 
 const Svg = styled.svg`
-  width: 0;
-  flex-grow: 1;
+  min-height: 500px;
+  width: 100%;
 `;
 
 class PieChartFive extends Component {
@@ -30,7 +32,6 @@ class PieChartFive extends Component {
     const { _newArc, _pieChartData, _handleClickPie } = this;
     return (
       <Container>
-        <JSONTable json={tweetsJSON.tweets} />
         <Svg>
           <g transform="translate(250, 250)">
             {_pieChartData().map(d => (
@@ -47,6 +48,7 @@ class PieChartFive extends Component {
             ))}
           </g>
         </Svg>
+        <JSONTable json={tweetsJSON.tweets} />
       </Container>
     );
   }
