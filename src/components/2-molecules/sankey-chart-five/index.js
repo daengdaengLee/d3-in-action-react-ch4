@@ -24,18 +24,44 @@ const Textarea = styled.textarea`
   min-height: 500px;
 `;
 
+const ButtonContainer = styled.div`
+  height: 50px;
+  min-height: 50px;
+`;
+
 class SankeyChartFive extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      nodeStyle: 'rect',
+      jsonStr: JSON.stringify(sitestatsJSON, null, 2),
+    };
+    this._onClickCircleStyle = this._onClickCircleStyle.bind(this);
+    this._onClickRectStyle = this._onClickRectStyle.bind(this);
+  }
+
   render() {
-    const { _sankey, _intensityRamp, _onMouseOut, _onMouseOver } = this;
-    const strJSON = JSON.stringify(sitestatsJSON, null, 2);
+    const {
+      _sankey,
+      _intensityRamp,
+      _onMouseOut,
+      _onMouseOver,
+      _onClickCircleStyle,
+      _onClickRectStyle,
+    } = this;
+    const { nodeStyle, jsonStr } = this.state;
     const { nodes, links } = sitestatsJSON;
-    const sankey = _sankey(nodes, links);
+    const sankey = _sankey(nodes, links, nodeStyle === 'rect' ? 20 : 1);
     const intensityRamp = _intensityRamp(_.max(links, obj => obj.value).value);
     return (
       <Container>
-        <Textarea disabled value={strJSON} />
+        <Textarea disabled value={jsonStr} />
+        <ButtonContainer>
+          <button onClick={_onClickRectStyle}>Rect</button>
+          <button onClick={_onClickCircleStyle}>Circle</button>
+        </ButtonContainer>
         <Svg>
-          <g transform="translate(20, 20)" className="sankeyG">
+          <g transform="translate(60, 20)" className="sankeyG">
             {sankey.links.sort((a, b) => b.width - a.width).map(link => (
               <path
                 key={link.index}
@@ -54,12 +80,22 @@ class SankeyChartFive extends Component {
                 className="node"
                 transform={`translate(${node.x0}, ${node.y0})`}
               >
-                <rect
-                  width={Math.abs(node.x0 - node.x1)}
-                  height={Math.abs(node.y0 - node.y1)}
-                  fill="pink"
-                  stroke="gray"
-                />
+                {nodeStyle === 'rect' ? (
+                  <rect
+                    width={Math.abs(node.x0 - node.x1)}
+                    height={Math.abs(node.y0 - node.y1)}
+                    fill="pink"
+                    stroke="gray"
+                  />
+                ) : (
+                  <circle
+                    height={Math.abs(node.y0 - node.y1)}
+                    r={Math.abs(node.y1 - node.y0) / 2}
+                    cy={Math.abs(node.y0 - node.y1) / 2}
+                    fill="pink"
+                    stroke="gray"
+                  />
+                )}
                 <text
                   x="0"
                   y={Math.abs(node.y0 - node.y1) / 2}
@@ -75,9 +111,9 @@ class SankeyChartFive extends Component {
     );
   }
 
-  _sankey(nodes, links) {
+  _sankey(nodes, links, nodeWidth) {
     return sankey()
-      .nodeWidth(20)
+      .nodeWidth(nodeWidth)
       .nodePadding(200)
       .size([460, 460])
       .nodes(nodes)
@@ -98,6 +134,14 @@ class SankeyChartFive extends Component {
 
   _onMouseOut(event) {
     event.target.style.strokeOpacity = '0.5';
+  }
+
+  _onClickRectStyle() {
+    this.setState({ nodeStyle: 'rect' });
+  }
+
+  _onClickCircleStyle() {
+    this.setState({ nodeStyle: 'circle' });
   }
 }
 
