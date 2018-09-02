@@ -12,6 +12,8 @@ import TreeChartFive from 'components/2-molecules/tree-chart-five';
 import RadialTreeFive from 'components/2-molecules/radial-tree-five';
 import StackChartFive from 'components/2-molecules/stack-chart-five';
 import StackBarFive from 'components/2-molecules/stack-bar-five';
+import SankeyChartFive from 'components/2-molecules/sankey-chart-five';
+import WordCloudFive from 'components/2-molecules/word-cloud-five';
 
 const CanvasContainer = styled.div`
   width: 100%;
@@ -31,6 +33,8 @@ const MainChartCanvas = () => (
     <Route path="/5/radial-tree" component={RadialTreeFive} />
     <Route path="/5/stack" component={StackChartFive} />
     <Route path="/5/stack-bar" component={StackBarFive} />
+    <Route path="/5/sankey" component={SankeyChartFive} />
+    <Route path="/5/word-cloud" component={WordCloudFive} />
   </CanvasContainer>
 );
 
