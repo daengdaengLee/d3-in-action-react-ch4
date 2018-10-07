@@ -18,11 +18,13 @@ const navigations = [
   { chapter: '5', page: 'word-cloud', name: '5-WordCloud' },
   { chapter: '6', page: 'adjacency-matrix', name: '6-AdjacencyMatrix' },
   { chapter: '6', page: 'arc-diagram', name: '6-ArcDiagram' },
+  { chapter: '6', page: 'forced-directed', name: '6-ForcedDirected' },
 ];
 
 const Nav = styled.nav`
   display: flex;
   height: 100%;
+  overflow: auto;
 `;
 
 const List = styled.ul`

@@ -16,6 +16,7 @@ import SankeyChartFive from 'components/2-molecules/sankey-chart-five';
 import WordCloudFive from 'components/2-molecules/word-cloud-five';
 import AdjacencyMatrixSix from 'components/2-molecules/adjacency-matrix-six';
 import ArcDiagramSix from 'components/2-molecules/arc-diagram-six';
+import ForcedDirectedSix from 'components/2-molecules/forced-directed-six';
 
 const CanvasContainer = styled.div`
   width: 100%;
@@ -39,6 +40,7 @@ const MainChartCanvas = () => (
     <Route path="/5/word-cloud" component={WordCloudFive} />
     <Route path="/6/adjacency-matrix" component={AdjacencyMatrixSix} />
     <Route path="/6/arc-diagram" component={ArcDiagramSix} />
+    <Route path="/6/forced-directed" component={ForcedDirectedSix} />
   </CanvasContainer>
 );
 
